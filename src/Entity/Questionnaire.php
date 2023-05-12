@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\QuestionnaireRepository;
+use App\Entity\Matiere;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\QuestionnaireRepository;
 
 #[ORM\Entity(repositoryClass: QuestionnaireRepository::class)]
 class Questionnaire
@@ -17,7 +18,7 @@ class Questionnaire
     private ?string $titre = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $matiere = null;
+    private ?Matiere $matiere = null;
 
 
     public function getId(): ?int
@@ -42,7 +43,7 @@ class Questionnaire
         return $this->matiere;
     }
 
-    public function setMatiere(string $matiere): self
+    public function setMatiere(?Matiere $matiere): self
     {
         $this->matiere = $matiere;
 
