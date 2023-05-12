@@ -17,7 +17,9 @@ class Questionnaire
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 255)]
+    // "Oublier pendant le live :
+    // #[ORM\Column(length: 255)]
+    #[ORM\ManyToOne(targetEntity: Matiere::class, inversedBy: 'questionnaires')]
     private ?Matiere $matiere = null;
 
 
