@@ -16,9 +16,8 @@ class Questionnaire
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $matiere = null;
-
+    #[ORM\ManyToOne(inversedBy: 'questionnaires')]
+    private ?Matiere $matiere = null;
 
     public function getId(): ?int
     {
@@ -37,17 +36,19 @@ class Questionnaire
         return $this;
     }
 
-    public function getMatiere(): ?string
+    public function getMatiere(): ?Matiere
     {
         return $this->matiere;
     }
 
-    public function setMatiere(string $matiere): self
+    public function setMatiere(?Matiere $matiere): self
     {
         $this->matiere = $matiere;
 
         return $this;
     }
+
+    
 
    
    
