@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Reponse;
 use App\Entity\Question;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/question')]
 class QuestionController extends AbstractController
@@ -25,6 +26,11 @@ class QuestionController extends AbstractController
     public function new(Request $request, QuestionRepository $questionRepository): Response
     {
         $question = new Question();
+        $reponse1= new Reponse();
+        $reponse2= new Reponse();
+        $question->addReponse($reponse1);
+        $question->addReponse($reponse2);
+        
         $form = $this->createForm(QuestionType::class, $question);
         $form->handleRequest($request);
 
@@ -34,7 +40,7 @@ class QuestionController extends AbstractController
             return $this->redirectToRoute('app_question_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('question/new.html.twig', [
+        return $this->render('question/new.html.twig', [
             'question' => $question,
             'form' => $form,
         ]);
