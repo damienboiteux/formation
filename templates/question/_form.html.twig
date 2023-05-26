@@ -1,5 +1,11 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.libelle) }}
+    <ul>
+        {% for reponse in form.reponses %}
+            <li>{{ form_row(reponse) }}</li>
+        {% endfor %}
+    </ul>
+    <button type="button">Ajouter une réponse</button>
     <div class="d-flex justify-content-between">
         <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
         <a href="{{ path('app_question_index') }}" class="btn btn-primary">Retour à la liste</a>
