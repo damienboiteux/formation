@@ -26,10 +26,10 @@ class QuestionController extends AbstractController
     public function new(Request $request, QuestionRepository $questionRepository): Response
     {
         $question = new Question();
-        $reponse1= new Reponse();
-        $reponse2= new Reponse();
-        $question->addReponse($reponse1);
-        $question->addReponse($reponse2);
+        // $reponse1= new Reponse();
+        // $reponse2= new Reponse();
+        // $question->addReponse($reponse1);
+        // $question->addReponse($reponse2);
         
         $form = $this->createForm(QuestionType::class, $question);
         $form->handleRequest($request);
@@ -42,7 +42,7 @@ class QuestionController extends AbstractController
 
         return $this->render('question/new.html.twig', [
             'question' => $question,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
