@@ -17,7 +17,7 @@ class Questionnaire
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
-    // "Oublié pendant le live :
+   // "Oublié pendant le live :
     // #[ORM\Column(length: 255)]
     // cet oubli avait pour conséquence de ne pas générer la colonne matiere_id dans la table questionnaire
     // et donc de ne pas pouvoir faire le lien entre les deux entités
@@ -45,7 +45,7 @@ class Questionnaire
         return $this;
     }
 
-    public function getMatiere(): ?string
+    public function getMatiere(): ?Matiere
     {
         return $this->matiere;
     }
@@ -56,6 +56,8 @@ class Questionnaire
 
         return $this;
     }
+
+    
 
    
    
