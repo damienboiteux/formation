@@ -1,13 +1,37 @@
+{# {{ dump(form.reponses.vars.prototype)}} #}
+
+{# {{ dump(form.reponses | last.vars.name)}} #}
+
+
 {{ form_start(form) }}
     {{ form_row(form.libelle) }}
-    <ul>
+    <ol
+        data-prototype = {{ form_widget(form.reponses.vars.prototype)|e('html_attr')}}
+        data-index = {{ form.reponses|length > 0 ? form.reponses | last.vars.name + 1 : 0}}
+    >
         {% for reponse in form.reponses %}
             <li>{{ form_row(reponse) }}</li>
         {% endfor %}
-    </ul>
-    <button type="button">Ajouter une réponse</button>
-    <div class="d-flex justify-content-between">
+    </ol>
+    <div class="d-flex gap-3">
+        <button class="btn btn-primary add-reponse" type="button">Ajouter une réponse</button>
         <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
-        <a href="{{ path('app_question_index') }}" class="btn btn-primary">Retour à la liste</a>
+        <a href="{{ path('app_question_index') }}" class="btn btn-primary ms-auto">Retour à la liste</a>
     </div>
 {{ form_end(form) }}
+
+
+{% block javascripts %}
+    <script>
+    const addReponse = (e) => {
+        // const listeReponses = document.querySelector('.reponses');
+        const listeReponses = e.target.closest('div').previousElementSibling;
+        const reponse = document.createElement('li');
+        reponse.innerHTML = listeReponses.dataset.prototype.replace(/__name__/g, listeReponses.dataset.index++);
+        listeReponses.appendChild(reponse);
+    }
+    
+    document.querySelectorAll('.add-reponse').forEach(btn=>{btn.addEventListener('click', addReponse)});
+    
+    </script>
+{% endblock %}
