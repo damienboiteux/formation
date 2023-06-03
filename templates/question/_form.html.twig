@@ -5,6 +5,8 @@
 
 {{ form_start(form) }}
     {{ form_row(form.libelle) }}
+    {{ form_row(form.image)}}
+    {{ form_row(form.imageFile)}}
     <ol
         data-prototype = {{ form_widget(form.reponses.vars.prototype)|e('html_attr')}}
         data-index = {{ form.reponses|length > 0 ? form.reponses | last.vars.name + 1 : 0}}
