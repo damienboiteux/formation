@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\QuestionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\QuestionRepository;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
+#[Vich\Uploadable]
 class Question
 {
     #[ORM\Id]
@@ -23,6 +26,63 @@ class Question
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Reponse::class, cascade: ['persist'])]
     private Collection $reponses;
+
+    // Début Image 1ere méthode (avec ou sans utilisation de FileUploader)
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image1 = null;
+
+    public function getImage1(): ?string
+    {
+        return $this->image1;
+    }
+
+    public function setImage1(?string $image1): self
+    {
+        $this->image1 = $image1;
+
+        return $this;
+    }
+    // Fin Image 1ere méthode
+    
+    // Début Image méthode Vich
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
+
+    #[Vich\UploadableField(mapping: 'file', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): Question
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile = null): Question
+    {
+        $this->imageFile = $imageFile;
+        if (null !== $imageFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+        return $this;
+    }
+    // Fin Image  méthode Vich
+
 
     public function __construct()
     {

@@ -9,39 +9,22 @@
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ question.id }}</td>
+                <td colspan="2">{{ question.id }}</td>
             </tr>
             <tr>
                 <th>Libellé</th>
-                <td>{{ question.libelle }}</td>
-            </tr>
-            <tr>
-                <th>Réponse 1</th>
-                <td>{{ question.reponse1 }}</td>
-            </tr>
-            <tr>
-                <th>Réponse 2</th>
-                <td>{{ question.reponse2 }}</td>
-            </tr>
-            <tr>
-                <th>Réponse 3</th>
-                <td>{{ question.reponse3 }}</td>
-            </tr>
-            <tr>
-                <th>Réponse 4</th>
-                <td>{{ question.reponse4 }}</td>
-            </tr>
-            <tr>
-                <th>Réponse 5</th>
-                <td>{{ question.reponse5 }}</td>
-            </tr>
-            <tr>
-                <th>Point</th>
-                <td>{{ question.point }}</td>
+                <td colspan="2">{{ question.libelle }}</td>
             </tr>
             <tr>
                 <th>Image</th>
                 <td>{{ question.image }}</td>
+                <td><img src="{{ asset('uploads/images/' ~ question.image) }}"></td>
+            </tr>
+            <tr>
+                <th>Image Vich</th>
+                <td>{{ question.imageName }}</td>
+                <td><img src="{{ vich_uploader_asset(question) }}"></td>
+
             </tr>
         </tbody>
     </table>
