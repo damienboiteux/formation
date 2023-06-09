@@ -1,8 +1,65 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {# {{ form_widget(form) }} #}
+    {{form_row(form.titre)}}
+    {{form_row(form.matiere)}}
+    <hr>
+    <div class="questions" data-prototype={{form_widget(form.questions.vars.prototype)|e('html_attr')}} 
+     data-index = {{ form.questions|length > 0 ? form.questions | last.vars.name + 1 : 0}}>
+        {% for question in form.questions %}
+            <div>{{form_widget(question.libelle)}}</div>
+            <div><div class="reponses" data-prototype={{form_widget(question.reponses.vars.prototype)|e('html_attr')}} 
+            data-index = {{ question.reponses|length > 0 ? question.reponses | last.vars.name + 1 : 0}}>
+                {% for reponse in  question.reponses %}
+                    <div>{{form_widget(reponse.libelle)}}</div>
+                {% endfor %}
+
+            </div></div>
+            <div class="my-3">{{form_widget(question.submit)}}</div>
+        {% endfor %}
+        <hr>
+    </div>
+    <div>
+        <button class="btn btn-primary my-3 add-question" type="button">Ajouter une question</button>
+    </div>
     <div class="d-flex justify-content-between">
         <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
-    <a href="{{ path('app_questionnaire_index') }}" class="btn btn-primary">Retour à la liste</a>
-
+        <a href="{{ path('app_questionnaire_index') }}" class="btn btn-primary">Retour à la liste</a>
     </div>
 {{ form_end(form) }}
+
+{% block javascripts %}
+
+<script>
+
+    const addReponse = (e) => {
+        const listeReponses = e.target.parentElement.previousElementSibling.firstElementChild;
+        console.log(listeReponses);
+        const item = document.createElement('div');
+        item.innerHTML = listeReponses.dataset.prototype.replace(/reponses___name___/g, 'reponses_'+listeReponses.dataset.index+'_').replace(/reponses\]\[__name__/g, 'reponses]['+listeReponses.dataset.index++);
+        console.log(item.querySelector('input'));
+        item.querySelector('input').classList.add('add-reponse');
+        listeReponses.appendChild(item);
+    }
+
+    const addQuestion = (e) => {
+        const listeQuestions = e.target.parentElement.previousElementSibling;
+        const item = document.createElement('div');
+        item.innerHTML = listeQuestions.dataset.prototype.replace(/questions___name___/g, 'questions_'+ listeQuestions.dataset.index + '_').replace(/questions\]\[__name__/g, 'questions]['+listeQuestions.dataset.index);;
+        listeQuestions.appendChild(item);
+
+        item.querySelector('button').addEventListener('click', addReponse);
+
+        listeQuestions.querySelector('#questionnaire_questions_'+listeQuestions.dataset.index+'_submit').dispatchEvent(new Event('click'));
+        listeQuestions.querySelector('#questionnaire_questions_'+listeQuestions.dataset.index +'_reponses').dataset.index=2;
+        
+        const separateur = document.createElement('hr');
+        listeQuestions.appendChild(separateur);
+        listeQuestions.dataset.index++;
+    }
+
+
+    document.querySelectorAll('.add-reponse').forEach(btn=>{btn.addEventListener('click',addReponse);});
+    document.querySelectorAll('.add-question').forEach(btn=>{btn.addEventListener('click',addQuestion);});
+</script>
+
+{% endblock %}

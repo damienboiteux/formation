@@ -13,7 +13,10 @@ class ReponseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('libelle', TextType::class, ['label' => false])
+            ->add('libelle', TextType::class, [
+                'label' => false,
+                'attr'=>['placeholder'=>'Réponse']
+            ])
         ;
     }
 

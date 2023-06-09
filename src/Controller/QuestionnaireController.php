@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Reponse;
+use App\Entity\Question;
 use App\Entity\Questionnaire;
 use App\Form\QuestionnaireType;
 use App\Repository\QuestionnaireRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route('/questionnaire')]
 class QuestionnaireController extends AbstractController
@@ -24,7 +29,15 @@ class QuestionnaireController extends AbstractController
     #[Route('/new', name: 'app_questionnaire_new', methods: ['GET', 'POST'])]
     public function new(Request $request, QuestionnaireRepository $questionnaireRepository): Response
     {
+
         $questionnaire = new Questionnaire();
+        $questionnaire->setTitre('Titre du questionnaire');
+        $question = new Question();
+        $question->setLibelle('Question 1');
+        $reponse = new Reponse();
+        $reponse->setLibelle('Réponse 1');
+        $question->addReponse($reponse);
+        $questionnaire->addQuestion($question);
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
         $form->handleRequest($request);
 

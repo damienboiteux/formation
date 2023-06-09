@@ -56,6 +56,10 @@ class Question
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Questionnaire $questionnaire = null;
+
     public function getImageName(): ?string
     {
         return $this->imageName;
@@ -144,6 +148,18 @@ class Question
                 $reponse->setQuestion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(?Questionnaire $questionnaire): self
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }
