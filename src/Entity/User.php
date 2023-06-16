@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,6 +34,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToMany(mappedBy: 'formateur', targetEntity: Questionnaire::class)]
+    private Collection $questionnaires;
+
+    public function __construct()
+    {
+        $this->questionnaires = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -127,6 +137,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName($lastName) : self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Questionnaire>
+     */
+    public function getQuestionnaires(): Collection
+    {
+        return $this->questionnaires;
+    }
+
+    public function addQuestionnaire(Questionnaire $questionnaire): self
+    {
+        if (!$this->questionnaires->contains($questionnaire)) {
+            $this->questionnaires->add($questionnaire);
+            $questionnaire->setFormateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionnaire(Questionnaire $questionnaire): self
+    {
+        if ($this->questionnaires->removeElement($questionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($questionnaire->getFormateur() === $this) {
+                $questionnaire->setFormateur(null);
+            }
+        }
 
         return $this;
     }

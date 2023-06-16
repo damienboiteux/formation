@@ -32,6 +32,9 @@ class Questionnaire
     #[ORM\OneToMany(mappedBy: 'questionnaire', targetEntity: Question::class, cascade: ['persist'])]
     private Collection $questions;
 
+    #[ORM\ManyToOne(inversedBy: 'questionnaires')]
+    private ?User $formateur = null;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -93,6 +96,18 @@ class Questionnaire
                 $question->setQuestionnaire(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFormateur(): ?User
+    {
+        return $this->formateur;
+    }
+
+    public function setFormateur(?User $formateur): self
+    {
+        $this->formateur = $formateur;
 
         return $this;
     }
