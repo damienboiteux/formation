@@ -27,9 +27,29 @@ class QuestionnaireController extends AbstractController
     }
 
     #[Route('/new', name: 'app_questionnaire_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, QuestionnaireRepository $questionnaireRepository): Response
+    // #[IsGranted('ROLE_FORMATEUR')]
+    public function new(Request $request, QuestionnaireRepository $questionnaireRepository, Security $security): Response
     {
 
+        // $user = $security->getUser();
+        // $user = $this->getUser();  // Merci à l'abstractController
+
+        // if($user == null ) {
+        //     throw new AccessDeniedException('Vous n\'avez pas accès à cette page');
+        // }    
+        
+        // if(!in_array('ROLE_FORMATEUR', $user->getRoles())) {
+        //     throw new AccessDeniedException('Vous n\'avez pas accès à cette page');
+        // }
+
+        // if(!$security->isGranted('ROLE_FORMATEUR')) {
+        //     throw new AccessDeniedException('Vous n\'avez pas accès à cette page');
+        // }
+
+        $this->denyAccessUnlessGranted('ROLE_FORMATEUR', null, 'Vous n\'avez pas accès à cette page');
+
+        
+        
         $questionnaire = new Questionnaire();
         $questionnaire->setTitre('Titre du questionnaire');
         $question = new Question();
@@ -64,6 +84,20 @@ class QuestionnaireController extends AbstractController
     #[Route('/{id}/edit', name: 'app_questionnaire_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Questionnaire $questionnaire, QuestionnaireRepository $questionnaireRepository): Response
     {
+
+        // $user = $this->getUser();
+
+        // if($user !== $questionnaire->getFormateur()) {
+        //     throw new AccessDeniedException('Vous n\'avez pas accès à ce questionnaire');
+        // }
+
+
+        // $security->isGranted('CAN_EDIT', $questionnaire);
+        $this->denyAccessUnlessGranted('CAN_EDIT', $questionnaire, 'Vous n\'avez pas accès à ce questionnaire' );
+
+
+
+
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
         $form->handleRequest($request);
 
