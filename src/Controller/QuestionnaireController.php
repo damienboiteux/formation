@@ -27,8 +27,7 @@ class QuestionnaireController extends AbstractController
     }
 
     #[Route('/new', name: 'app_questionnaire_new', methods: ['GET', 'POST'])]
-    // #[IsGranted('ROLE_FORMATEUR')]
-    public function new(Request $request, QuestionnaireRepository $questionnaireRepository, Security $security): Response
+    public function new(Request $request, QuestionnaireRepository $questionnaireRepository): Response
     {
 
         // $user = $security->getUser();
@@ -67,7 +66,7 @@ class QuestionnaireController extends AbstractController
             return $this->redirectToRoute('app_questionnaire_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('questionnaire/new.html.twig', [
+        return $this->render('questionnaire/new.html.twig', [
             'questionnaire' => $questionnaire,
             'form' => $form,
         ]);
@@ -82,9 +81,9 @@ class QuestionnaireController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_questionnaire_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Questionnaire $questionnaire, QuestionnaireRepository $questionnaireRepository): Response
+    public function edit(Request $request, Questionnaire $questionnaire, QuestionnaireRepository $questionnaireRepository, $ip): Response
     {
-
+        dd($ip);
         // $user = $this->getUser();
 
         // if($user !== $questionnaire->getFormateur()) {
@@ -107,7 +106,7 @@ class QuestionnaireController extends AbstractController
             return $this->redirectToRoute('app_questionnaire_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('questionnaire/edit.html.twig', [
+        return $this->render('questionnaire/edit.html.twig', [
             'questionnaire' => $questionnaire,
             'form' => $form,
         ]);
