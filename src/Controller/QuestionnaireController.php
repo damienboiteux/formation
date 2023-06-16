@@ -82,9 +82,9 @@ class QuestionnaireController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_questionnaire_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Questionnaire $questionnaire, QuestionnaireRepository $questionnaireRepository): Response
+    public function edit(Request $request, Questionnaire $questionnaire, QuestionnaireRepository $questionnaireRepository, $ip): Response
     {
-
+        dd($ip);
         // $user = $this->getUser();
 
         // if($user !== $questionnaire->getFormateur()) {
