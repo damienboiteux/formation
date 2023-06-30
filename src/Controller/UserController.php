@@ -47,7 +47,10 @@ class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, [
+            'action' => $this->generateUrl('user_new'),
+            'validation_groups' => ['Default', 'new'],
+        ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));

@@ -28,6 +28,9 @@ class MatiereController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            // $matiere->setCreatedAt(new \DateTime());
+            // $matiere->setUpdatedAt(new \DateTime());
+
             $repo->save($matiere, true);
             $this->addFlash('success', 'Matière créée avec succès');
             return $this->redirectToRoute('app_matiere');

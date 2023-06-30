@@ -1,0 +1,17 @@
+
+
+1 - LifecycleCallbacks
+
+    * 1 entité
+    * manipulations simples
+
+2 - Listeners / Subscribers
+
+    * toutes les entités
+    * manipulations complexes
+
+3 - Entity Listeners
+
+    * 1 entité
+    * manipulations complexes
+

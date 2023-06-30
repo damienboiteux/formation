@@ -3,7 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Entity\Region;
 use App\Entity\Matiere;
+use App\Entity\Departement;
 use App\Entity\Questionnaire;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
@@ -50,6 +52,38 @@ class AppFixtures extends Fixture
         $matiere->setLibelle('HTML');
         $manager->persist($matiere);
         $this->addReference('matiere-html', $matiere);
+
+        $regions = [
+            'Bourgogne-Franche-Comté' => [
+                'Jura',
+                'Haute-Saône',
+            ],
+            'Grand Est' => [
+                'Haute-Marne',
+                'Meurthe-et-Moselle',
+                'Moselle',
+                'Vosges',
+            ],
+            'Île-de-France'=> [
+                'Seine-et-Marne',
+                'Yvelines'],
+        ];
+        foreach ($regions as $region => $departements) {
+        
+            $regionEntity = new Region();
+            $regionEntity->setName($region);
+            $manager->persist($regionEntity);
+        
+            foreach ($departements as $departement) {
+                $departementEntity = new Departement();
+                $departementEntity->setName($departement);
+                $departementEntity->setRegion($regionEntity);
+                $manager->persist($departementEntity);
+        
+            }
+        
+        }
+
 
 
         $manager->flush();

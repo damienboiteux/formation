@@ -2,12 +2,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\Timestampable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Matiere {
-
+    
+    use Timestampable;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -18,6 +21,15 @@ class Matiere {
 
     #[ORM\OneToMany(mappedBy: 'matiere', targetEntity: Questionnaire::class)]
     private Collection $questionnaires;
+
+    #[ORM\Column(length: 255, nullable:true)]
+    private ?string $slug = null;
+
+    // #[ORM\Column(nullable: true)]
+    // private ?\DateTimeImmutable $createdAt = null;
+
+    // #[ORM\Column(nullable: true)]
+    // private ?\DateTimeImmutable $updatedAt = null;
 
     public function __construct() {
         $this->questionnaires = new ArrayCollection();
@@ -63,5 +75,62 @@ class Matiere {
         }
         return $this;
     }
+
+    // public function getCreatedAt(): ?\DateTimeImmutable
+    // {
+    //     return $this->createdAt;
+    // }
+
+    // public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    // {
+    //     $this->createdAt = $createdAt;
+
+    //     return $this;
+    // }
+
+    // public function getUpdatedAt(): ?\DateTimeImmutable
+    // {
+    //     return $this->updatedAt;
+    // }
+
+    // public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    // {
+    //     $this->updatedAt = $updatedAt;
+
+    //     return $this;
+    // }
+
+    // #[ORM\PrePersist]
+    // public function prePersist(): void {
+    //     $this->createdAt = new \DateTimeImmutable();
+    //     $this->updatedAt = new \DateTimeImmutable();
+    // }
+
+    // #[ORM\PreUpdate]
+    // public function preUpdate(): void {
+    //     $this->updatedAt = new \DateTimeImmutable();
+    // }
+
+    // #[ORM\PrePersist]
+    // #[ORM\PreUpdate]
+    // public function prePersist(): void {
+    //     if($this->createdAt === null) {
+    //         $this->createdAt = new \DateTimeImmutable();
+    //     }
+    //     $this->updatedAt = new \DateTimeImmutable();
+    // }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
 
 }

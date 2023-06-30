@@ -32,3 +32,14 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+
+    # App\Doctrine\Listener\MatiereSlugListener:
+    #     tags:
+    #         - { name: doctrine.event_listener, event: prePersist }
+    #         - { name: doctrine.event_listener, event: preUpdate }
+
+    App\Doctrine\Listener\MatiereSlugListener:
+        tags:
+            - { name: doctrine.orm.entity_listener, event: prePersist, entity: App\Entity\Matiere }
+            - { name: doctrine.orm.entity_listener, event: preUpdate, entity: App\Entity\Matiere }

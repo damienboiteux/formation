@@ -9,3 +9,39 @@
     </div>
     {{ form_end(form)}}
 {% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        window.onload = () => {
+
+            const region = document.querySelector('#user_region');
+
+            region.addEventListener('change', function() {
+                const form = this.closest('form');
+                const data = this.name + "=" + this.value;
+
+                fetch(form.getAttribute('action'), {
+                    method: form.getAttribute('method'),
+                    body: data,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'charset': 'utf-8'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // console.log(html);
+                    const content  = document.createElement('html');
+                    content.innerHTML = html;
+                    const newSelect = content.querySelector('#user_departement');
+                    document.querySelector('#user_departement').replaceWith(newSelect);
+                })
+                .catch(error=>console.logt(error))
+                
+                ;
+            });
+
+        }
+    </script>
+{% endblock %}
